@@ -1,0 +1,29 @@
+#+TITLE: C elegans connectome (from Varshney et. al 2011)
+
+#+AUTHOR: Iván Estévez Albuja
+
+C. elegans connectome in csv form. 
+
+
+
+* Data folder 
+Data from Eli Shlizerman and Jimin Kim (https://github.com/shlizee/C-elegans-Neural-Interactome)
+Based on the original data from Varshney et. al 2011 (https://doi.org/10.1371/journal.pcbi.1001066)
+
+* Results folder
+Adjacency Matrices for chemical synapses and gap junctions in CSV format
+
+** Chem.csv: 
+- 2217 Chemical synapses
+- Inhibitory synapses represented as negative elements 
+
+** Gap.csv:
+- 1080 bidirectional gap junctions
+- Forced bidirectionality by adding 15 gap junctions to make the original data symmetrical
+
+** Gap_no15.csv 
+- 1050 bidirectional gap junctions
+- Forced bidirectionality by removing the 15 non-symmetric gap junctions from the original data
+
+** Labels.csv
+- Names of the neurons in the order they appear in the adjacency matrices
