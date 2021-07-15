@@ -18,14 +18,14 @@ N = 279
 
 with open ('data/chem.json') as chem_file:
     chem_dic = json.load(chem_file)
-    
-with open ('data/gap.json') as gap_file:
-    gap_dic = json.load(gap_file)   
-    
-Chem_mat = np.zeros((N,N))   
-Gap_mat = np.zeros((N,N))    
 
-# GAP JUNCTION CONNECTIONS  
+with open ('data/gap.json') as gap_file:
+    gap_dic = json.load(gap_file)
+
+Chem_mat = np.zeros((N,N))
+Gap_mat = np.zeros((N,N))
+
+# GAP JUNCTION CONNECTIONS
 gap_links = gap_dic['links']
 
 # Find if all gap junctions are bidirectional
@@ -41,7 +41,7 @@ for d in gap_links:
             i += 1
             done = True
             if d['value'] != e['value']:
-                print("differnet value! for:") # none have different weight!            
+                print("differnet value! for:") # none have different weight!
     if not done:
         #print(' no bidirectional for:', d) # 15 are not bidirectional
         non_sym_sources.append(s)
@@ -49,7 +49,7 @@ for d in gap_links:
     else :
         done = False
 
-        
+
 print("bidirectional gap junctions:",i, "out of", len(gap_links))
 # bidirectional gap junctions: 1050 out of 1065
 
@@ -60,26 +60,26 @@ for g in gap_links:
     v = g['value']
     Gap_mat[s,t] = v
     Gap_mat[t,s] = v
-    
-name_gap = 'results/Gap.csv'
+
+name_gap = 'results/Gap_headless.csv'
 np.savetxt(name_gap, Gap_mat, fmt='%1.2f', delimiter=',')
 print('Gap junctions matrix written in file:', name_gap,'(',
       np.count_nonzero(Gap_mat),'non-zero elements)')
 #gap_test = np.loadtxt('Gap.csv', delimiter=',') # how to load the data
 
 #Solution 2: remove non symetrical gap junctions
-Gap_mat_no15 = Gap_mat  
+Gap_mat_no15 = Gap_mat
 for i, j in zip(non_sym_sources, non_sym_targets):
     Gap_mat_no15[i,j] = 0
     Gap_mat_no15[j,i] = 0
-    
-name_gap2 = 'results/Gap_no15.csv'
+
+name_gap2 = 'results/GapNo15_headless.csv'
 np.savetxt(name_gap2, Gap_mat_no15, fmt='%1.2f', delimiter=',')
 print('Gap junctions matrix  (without 15) written in file:', name_gap2,'(',
-      np.count_nonzero(Gap_mat_no15),'non-zero elements)')    
+      np.count_nonzero(Gap_mat_no15),'non-zero elements)')
 
-# CHEMICAL SYNAPSES 
- 
+# CHEMICAL SYNAPSES
+
 E = np.load('data/emask.npy')
 E = E[:,0] #array of 279 elements. 1 = inhibitory synapse
 # source index in E => GABAegic neuron => inhibitory (hypothesis)
@@ -95,9 +95,9 @@ for c in chem_synapses:
         Chem_mat[s,t] = -v
     else:
         Chem_mat[s,t] = v
-    
-    
-name_chem = 'results/Chem.csv'
+
+
+name_chem = 'results/Chem_headless.csv'
 np.savetxt(name_chem, Chem_mat, fmt='%1.2f', delimiter=',')
 print('Chemical synapses matrix written in file:', name_chem,
       '(',np.count_nonzero(Chem_mat),'non-zero elements)')
@@ -114,7 +114,7 @@ file = open(labels_file,'w')
 for l in labels:
     file.write(l+'\n')
 
-file.close()   
+file.close()
 
 print('Neuron labels written in file:', labels_file)
 
@@ -129,12 +129,9 @@ readfile.close()
 # for node in chem_dic['nodes']:
 #     xs.append(node['x'])
 #     ys.append(node['y'])
-    
-# neurons = [80, 131, 157, 57, 153, 134, 266, 121, 113, 1]   
+
+# neurons = [80, 131, 157, 57, 153, 134, 266, 121, 113, 1]
 
 # for n in neurons:
 #     inst = chem_dic['nodes'][n]
 #     print(inst['x'], ',',inst['y'], '#',inst['name'])
-
-
-
